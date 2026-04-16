@@ -1,0 +1,27 @@
+{% extends 'shop/besic.html' %}
+
+{% block title %}{{ product.product_name }}{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="row">
+
+        <!-- LEFT: IMAGE -->
+        <div class="col-md-4">
+            <img src="/media/{{ product.image }}" class="img-fluid rounded" alt="{{ product.product_name }}">
+        </div>
+
+        <!-- RIGHT: DETAILS -->
+        <div class="col-md-8">
+            <h3>{{ product.product_name }}</h3>
+            <p class="text-muted">{{ product.product_description }}</p>
+
+            <h4>₹{{ product.price }}</h4>
+
+            <button class="btn btn-primary mt-3">Add to Cart</button>
+            <button class="btn btn-primary mt-3">Buy Now</button>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

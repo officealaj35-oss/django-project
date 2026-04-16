@@ -1,0 +1,74 @@
+{% extends 'shop/besic.html' %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block body %}
+
+<!-- HERO -->
+<section class="bg-dark text-white text-center py-5">
+    <div class="container">
+        <h1 class="fw-bold">Contact Us</h1>
+        <p class="lead">We’d love to hear from you. Send us your queries anytime.</p>
+    </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+
+            <!-- LEFT: CONTACT INFO -->
+            <div class="col-md-5 mb-4">
+                <h3 class="fw-bold mb-3">Get in Touch</h3>
+                <p class="text-muted">Have questions? Reach out to us directly.</p>
+
+                <p><strong>📍 Address:</strong> Hingona, India</p>
+                <p><strong>📞 Phone:</strong> +91 9876543210</p>
+                <p><strong>📧 Email:</strong> support@myshop.com</p>
+
+                <div class="mt-4">
+                    <iframe
+                        src="https://maps.google.com/maps?q=india&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                        width="100%" height="200" style="border:0;" allowfullscreen="">
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- RIGHT: FORM -->
+            <div class="col-md-7">
+                <div class="card shadow p-4">
+                    <h4 class="mb-3">Send Message</h4>
+
+                        <form method="post" action="{% url 'contactUs' %}">{% csrf_token %}
+
+                        <div class="mb-3">
+                            <label>Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="Enter your name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Phone</label>
+                            <input type="tel" name="phone" class="form-control" placeholder="Enter your phone">
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Message</label>
+                            <textarea name="message" rows="4" class="form-control" placeholder="Write your message..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

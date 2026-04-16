@@ -1,0 +1,12 @@
+{% extends 'shop/besic.html' %}
+
+{% block title %}Success{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="alert alert-success">
+        Order placed successfully.<br>
+        Your Order ID is: <strong>{{ order_id }}</strong>
+    </div>
+</div>
+{% endblock %}

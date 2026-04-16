@@ -1,0 +1,330 @@
+{% extends 'shop/besic.html' %}
+{% load static %}
+
+{% block body %}
+
+<style>
+body { background:#0b0f14; color:#fff; }
+
+/* CARD */
+.card-custom {
+    flex: 0 0 240px;
+    min-width:240px;
+    height:425px;
+    border-radius:16px;
+    overflow:hidden;
+    background:linear-gradient(145deg,#0f172a,#111827);
+    border:1px solid rgba(255,255,255,0.06);
+    transition:0.3s;
+    display:flex;
+    flex-direction:column;
+}
+
+.card-custom:hover {
+    transform:translateY(-6px);
+    box-shadow:0 10px 25px rgba(0,255,170,0.15);
+}
+
+.img-box { height:180px; }
+.img-box img { width:100%; height:100%; object-fit:cover; }
+
+/* BODY FIX */
+.card-body {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    height:100%;
+    padding:10px;
+}
+
+/* TEXT */
+.product-title {
+    color:white;
+    font-weight:700;
+    font-size:15px;
+    min-height:40px;
+}
+
+.product-desc {
+    font-size:12px;
+    color:#aaa;
+    height:34px;
+    overflow:hidden;
+}
+
+.price {
+    color:#00ffaa;
+    font-weight:bold;
+    margin:5px 0;
+}
+
+/* BADGE */
+.badge-custom {
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:#00ffaa;
+    color:black;
+    padding:4px 8px;
+    border-radius:6px;
+}
+
+/* MAIN FIX */
+.bottom-section {
+    margin-top:auto;
+    width:100%;
+}
+
+/* CART */
+.cart-box {
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-bottom:8px;
+}
+
+/* BUTTON */
+.quick-btn {
+    width:100%;
+    border:1px solid #00ffaa;
+    color:#00ffaa;
+}
+
+/* SLIDER */
+.slider-wrapper { overflow:hidden; position:relative; padding:10px 40px; }
+.slider-track {
+    display:flex;
+    gap:20px;
+    transition:transform 0.4s ease;
+    width:max-content;
+}
+
+.slider-btn {
+    position:absolute;
+    top:45%;
+    background:black;
+    color:white;
+    border:none;
+    width:40px;
+    height:40px;
+    z-index:10;
+    cursor:pointer;
+}
+.left-btn { left:0; }
+.right-btn { right:0; }
+</style>
+
+{% for products, range, nslides in allprods %}
+
+<h4>{{ products.0.category_name }}</h4>
+
+<div class="slider-wrapper">
+
+<button type="button" class="slider-btn left-btn" onclick="slideLeft({{ forloop.counter }})">❮</button>
+<button type="button" class="slider-btn right-btn" onclick="slideRight({{ forloop.counter }})">❯</button>
+
+<div class="slider-track" id="slider{{ forloop.counter }}">
+
+{% for product in products %}
+<div class="card card-custom"
+     id="card{{ product.product_id }}"
+     data-name="{{ product.product_name|escape }}"
+     data-price="{{ product.price }}"
+     data-image="/media/{{ product.image }}"
+     data-url="{% url 'product_view' product.product_id %}">
+
+<div class="badge-custom">Hot</div>
+
+<div class="img-box">
+<a href="{% url 'product_view' product.product_id %}">
+<img id="imgpr{{ product.product_id }}" src="/media/{{ product.image }}" alt="{{ product.product_name|escape }}">
+</a>
+</div>
+
+<div class="card-body">
+
+<h6 class="product-title" id="namepr{{ product.product_id }}">
+{{ product.product_name }}
+</h6>
+
+<p class="product-desc">
+{{ product.product_description|truncatechars:40 }}
+</p>
+
+<div class="price" id="pricepr{{ product.product_id }}">₹{{ product.price }}</div>
+
+<div class="bottom-section">
+
+<div id="divpr{{ product.product_id }}" class="cart-box">
+<button type="button" id="pr{{ product.product_id }}" class="btn btn-success cart">Add to Cart</button>
+</div>
+
+<a href="{% url 'product_view' product.product_id %}">
+<button type="button" class="btn quick-btn">Quick View</button>
+</a>
+
+</div>
+
+</div>
+</div>
+{% endfor %}
+
+</div>
+</div>
+
+{% endfor %}
+
+{% endblock %}
+{% block js %}
+{{ block.super }}
+<script>
+
+var CART_KEY = "cart_" + (window.username || "guest");
+/* ---------- CART ---------- */
+
+function getCart(){
+    return JSON.parse(localStorage.getItem(CART_KEY) || "{}");
+}
+
+function saveCart(cart){
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+
+/* ---------- HEADER SAFE ---------- */
+
+function updateHeader(){
+    let cart = getCart();
+    let total = 0;
+
+    Object.values(cart).forEach(i => total += i.qty);
+
+    let badge = document.getElementById("cart");
+    if(badge){
+        badge.innerText = total;
+    }
+}
+
+/* ---------- ADD TO CART ---------- */
+
+document.addEventListener("click", function(e){
+
+    if(e.target.classList.contains("cart")){
+        let id = e.target.id;
+        let cart = getCart();
+
+        let realId = id.replace("pr","");
+        let card = document.getElementById("card"+realId);
+
+        if(!card){
+            console.log("Card not found:", id);
+            return;
+        }
+
+        if(!cart[id]){
+            cart[id] = {
+                qty: 0,
+                name: card.dataset.name || "",
+                price: parseInt(card.dataset.price) || 0,
+                image: card.dataset.image || "",
+                url: card.dataset.url || ""
+            };
+        }
+
+        cart[id].qty += 1;
+
+        saveCart(cart);
+
+        console.log("CART SAVED:", cart); // DEBUG
+
+        updateUI(id, cart[id].qty);
+        updateHeader();
+    }
+
+    if(e.target.classList.contains("plus")){
+        let id = e.target.id.replace("plus","");
+        let cart = getCart();
+
+        if(cart[id]){
+            cart[id].qty += 1;
+        }
+
+        saveCart(cart);
+        updateUI(id, cart[id].qty);
+        updateHeader();
+    }
+
+    if(e.target.classList.contains("minus")){
+        let id = e.target.id.replace("minus","");
+        let cart = getCart();
+
+        if(cart[id]){
+            cart[id].qty -= 1;
+
+            if(cart[id].qty <= 0){
+                delete cart[id];
+                document.getElementById("div"+id).innerHTML =
+                    `<button id="${id}" class="btn btn-success cart">Add to Cart</button>`;
+            }else{
+                updateUI(id, cart[id].qty);
+            }
+        }
+
+        saveCart(cart);
+        updateHeader();
+    }
+
+});
+
+/* ---------- UI UPDATE ---------- */
+
+function updateUI(id, qty){
+    let div = document.getElementById("div"+id);
+
+    if(!div) return;
+
+    div.innerHTML = `
+        <button id="minus${id}" class="btn btn-danger minus">-</button>
+        <span>${qty}</span>
+        <button id="plus${id}" class="btn btn-success plus">+</button>
+    `;
+}
+
+/* ---------- INIT ---------- */
+
+window.addEventListener("DOMContentLoaded", function(){
+    let cart = getCart();
+
+    Object.keys(cart).forEach(id=>{
+        updateUI(id, cart[id].qty);
+    });
+
+    updateHeader();
+});
+
+/* ---------- SLIDER ---------- */
+
+window.slideIndex = {};
+
+window.slideLeft = function(id){
+    let s = document.getElementById("slider"+id);
+    if(!s) return;
+
+    slideIndex[id] = slideIndex[id] || 0;
+    if(slideIndex[id] > 0) slideIndex[id]--;
+
+    s.style.transform = `translateX(-${slideIndex[id]*270}px)`;
+}
+
+window.slideRight = function(id){
+    let s = document.getElementById("slider"+id);
+    if(!s) return;
+
+    slideIndex[id] = slideIndex[id] || 0;
+    if(slideIndex[id] < s.children.length-1) slideIndex[id]++;
+
+    s.style.transform = `translateX(-${slideIndex[id]*270}px)`;
+}
+
+</script>
+{% endblock %}

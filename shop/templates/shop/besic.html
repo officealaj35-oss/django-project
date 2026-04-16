@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<title>{% block title %}MyShop{% endblock %}</title>
+<script>
+window.username = "{% if user.is_authenticated %}{{ request.user.username }}{% else %}guest{% endif %}";
+</script>
+<style>
+body {
+    background: #0b0f14;
+    color: #fff;
+}
+
+/* NAVBAR */
+.navbar .nav-link {
+    color: #ddd !important;
+}
+
+.navbar .nav-link:hover {
+    color: #00ffaa !important;
+}
+
+/* CART BUTTON */
+#popcart {
+    border: 1px solid #00ffaa;
+    color: #00ffaa;
+}
+
+#popcart:hover {
+    background: #00ffaa;
+    color: black;
+}
+
+.container-main {
+    padding: 20px;
+}
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<div class="container-fluid">
+
+<a class="navbar-brand" href="/shop/">MyShop</a>
+
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+<span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="navbarNav">
+
+<ul class="navbar-nav me-auto">
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categories</a>
+<ul class="dropdown-menu">
+<li><a class="dropdown-item">Electronics</a></li>
+<li><a class="dropdown-item">Clothing</a></li>
+<li><a class="dropdown-item">Shoes</a></li>
+</ul>
+</li>
+</ul>
+
+<ul class="navbar-nav mx-auto gap-3">
+<li><a class="nav-link" href="/shop/">Home</a></li>
+<li><a class="nav-link" href="/shop/about/">About</a></li>
+<li><a class="nav-link" href="/shop/checkout/">Checkout</a></li>
+<li><a class="nav-link" href="/shop/contact/">Contact</a></li>
+<li><a class="nav-link" href="/shop/search/">Search</a></li>
+<li><a class="nav-link" href="/shop/tracker/">Tracker</a></li>
+</ul>
+
+<form class="d-flex me-3" method="GET" action="/shop/search/">
+<input class="form-control me-2" type="search" name="query" placeholder="Search">
+<button class="btn btn-outline-light">Search</button>
+</form>
+
+<ul class="navbar-nav align-items-center gap-2">
+
+<li>
+<button id="popcart"
+        type="button"
+        class="btn btn-sm">
+    🛒 <span id="cart" class="badge bg-success ms-2">0</span>
+</button>
+</li>
+
+{% if user.is_authenticated %}
+<li><span class="nav-link">Hi, {{ user.username }}</span></li>
+<li><a class="nav-link" href="/logout/">Logout</a></li>
+{% else %}
+<li><a class="nav-link" href="/login/">Login</a></li>
+{% endif %}
+
+</ul>
+
+</div>
+</div>
+</nav>
+
+<div class="container-main">
+{% block body %}{% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+/* USER-SPECIFIC CART KEY */
+window.CART_KEY = "{% if user.is_authenticated %}cart_{{ user.id }}{% else %}cart_guest{% endif %}";
+</script>
+
+{% block js %}
+<script>
+{#const CART_KEY = window.CART_KEY || "cart_guest";#}
+
+function updateHeaderCartCount() {
+    let cart = {};
+    try {
+        cart = JSON.parse(localStorage.getItem(CART_KEY) || "{}") || {};
+    } catch (e) {
+        cart = {};
+    }
+
+    let sum = 0;
+    Object.keys(cart).forEach(function (key) {
+        const item = cart[key];
+        if (typeof item === "number") {
+            sum += item;
+        } else if (item && typeof item === "object") {
+            sum += parseInt(item.qty || 0, 10) || 0;
+        }
+    });
+
+    const badge = document.getElementById("cart");
+    if (badge) badge.innerText = sum;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    updateHeaderCartCount();
+
+    const popcart = document.getElementById("popcart");
+    if (popcart) {
+        popcart.addEventListener("click", function() {
+            window.location.href = "/shop/checkout/";
+        });
+    }
+});
+
+window.addEventListener("storage", function(event) {
+    if (!event.key || event.key === CART_KEY) {
+        updateHeaderCartCount();
+    }
+});
+</script>
+{% endblock %}
+
+</body>
+</html>
