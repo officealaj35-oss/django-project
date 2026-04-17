@@ -214,18 +214,19 @@ def logout_view(request):
     logout(request)
     return redirect("login")
 
+
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 
 def create_admin(request):
-    try:
-        if not User.objects.filter(username='ajay').exists():
-            User.objects.create_superuser(
-                username='ajay',
-                email='test@test.com',
-                password='1234'
-            )
-            return HttpResponse("Admin created")
-        return HttpResponse("Already exists")
-    except Exception as e:
-        return HttpResponse(f"Error: {e}")
+    # ⚡ पुराना user delete कर
+    User.objects.filter(username='ajay').delete()
+
+    # ✅ नया user सही तरीके से बना
+    user = User(username='ajay', email='test@test.com')
+    user.set_password('1234')   # ⚡ MUST
+    user.is_staff = True
+    user.is_superuser = True
+    user.save()
+
+    return HttpResponse("Admin reset created")
