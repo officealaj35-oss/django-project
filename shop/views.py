@@ -213,3 +213,9 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("login")
+
+def create_admin(request):
+    if not User.objects.filter(username='ajay').exists():
+        User.objects.create_superuser('ajay', 'test@test.com', '1234')
+        return HttpResponse("Admin created")
+    return HttpResponse("Already exists")
