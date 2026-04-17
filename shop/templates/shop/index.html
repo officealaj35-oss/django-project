@@ -131,7 +131,7 @@ body { background:#0b0f14; color:#fff; }
      id="card{{ product.product_id }}"
      data-name="{{ product.product_name|escape }}"
      data-price="{{ product.price }}"
-     data-image="/media/{{ product.image }}"
+     data-image="{{ product.image.url }}"
      data-url="{% url 'product_view' product.product_id %}">
 
 <div class="badge-custom">Hot</div>
