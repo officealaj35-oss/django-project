@@ -19,6 +19,8 @@ ALLOWED_HOSTS = ['*']
 
 # APPLICATIONS
 INSTALLED_APPS = [
+    'cloudinary',
+    'cloudinary_storage',
     'shop.apps.ShopConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -28,7 +30,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
 ]
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dur17fyv9',
+    'API_KEY': '912189236952862',
+    'API_SECRET': 'NSgtAf3QDxBd3WqOfPJKBq4qayM',
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # MIDDLEWARE
 MIDDLEWARE = [
