@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
 SECRET_KEY = 'django-insecure-s%r#d^4=-ermoz#_7@sa!k+mz$4978(=a0m_^%6-3o8%#9u%&0'
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 
@@ -37,7 +37,7 @@ import cloudinary.api
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dur17fyv9',
     'API_KEY': '912189236952862',
-    'API_SECRET': 'NSgtAf3QDxBd3WqOfPJKBq4qayM',
+    'API_SECRET':  'NSgtAf3QDxBd3WqOfPJKBq4qayM'
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
@@ -45,9 +45,7 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # 👈 ये add कर
-
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
