@@ -138,8 +138,7 @@ body { background:#0b0f14; color:#fff; }
 
 <div class="img-box">
 <a href="{% url 'product_view' product.product_id %}">
-<img id="imgpr{{ product.product_id }}" src="/media/{{ product.image }}" alt="{{ product.product_name|escape }}">
-</a>
+<img id="imgpr{{ product.product_id }}" src="{{ product.image.url }}" alt="{{ product.product_name|escape }}"></a>
 </div>
 
 <div class="card-body">
