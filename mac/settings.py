@@ -19,6 +19,7 @@ ALLOWED_HOSTS = ['*']
 
 # APPLICATIONS
 INSTALLED_APPS = [
+    'jazzmin',
     'cloudinary',
     'cloudinary_storage',
     'shop.apps.ShopConfig',
@@ -40,7 +41,7 @@ CLOUDINARY_STORAGE = {
     'API_SECRET':  'NSgtAf3QDxBd3WqOfPJKBq4qayM'
 }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # MIDDLEWARE
 MIDDLEWARE = [
@@ -117,12 +118,11 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_MANIFEST_STRICT = False
 
 # MEDIA FILES
