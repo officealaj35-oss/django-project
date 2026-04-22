@@ -5,3 +5,4 @@ Pillow==10.2.0
 cloudinary==1.39.0
 django-cloudinary-storage==0.3.0
 django-storages==1.14.2
+django-jazzmin==2.6.0
