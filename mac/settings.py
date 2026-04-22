@@ -41,7 +41,6 @@ CLOUDINARY_STORAGE = {
     'API_SECRET':  'NSgtAf3QDxBd3WqOfPJKBq4qayM'
 }
 
-STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
 # MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -121,8 +120,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 #     os.path.join(BASE_DIR, 'static'),
 # ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-WHITENOISE_MANIFEST_STRICT = False
+STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
+
+WHITENOISE_MANIFEST_STRICT = True
 
 # MEDIA FILES
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
