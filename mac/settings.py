@@ -41,8 +41,7 @@ CLOUDINARY_STORAGE = {
     'API_SECRET':  'NSgtAf3QDxBd3WqOfPJKBq4qayM'
 }
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
 # MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
