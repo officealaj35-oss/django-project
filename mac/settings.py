@@ -10,17 +10,21 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
+
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY
 SECRET_KEY = 'django-insecure-s%r#d^4=-ermoz#_7@sa!k+mz$4978(=a0m_^%6-3o8%#9u%&0'
-DEBUG = True
+
+# Production me False rakho
+DEBUG = False
+
 ALLOWED_HOSTS = ['*']
 
 
-# APPLICATIONS
+# INSTALLED APPS
 INSTALLED_APPS = [
     'jazzmin',
 
@@ -42,14 +46,24 @@ INSTALLED_APPS = [
 ]
 
 
-# Cloudinary Settings
+# =========================
+# CLOUDINARY CONFIG
+# =========================
+
+cloudinary.config(
+    cloud_name="dur17fyv9",
+    api_key="912189236952862",
+    api_secret="NSgtAf3QDxBd3WqOfPJKBq4qayM",
+    secure=True
+)
+
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dur17fyv9',
     'API_KEY': '912189236952862',
     'API_SECRET': 'NSgtAf3QDxBd3WqOfPJKBq4qayM',
 }
 
-# VERY IMPORTANT
+# Important for image upload
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
@@ -129,16 +143,23 @@ USE_I18N = True
 USE_TZ = True
 
 
+# =========================
 # STATIC FILES
+# =========================
+
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
+
 WHITENOISE_MANIFEST_STRICT = False
 
 
+# =========================
 # MEDIA FILES
+# =========================
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
