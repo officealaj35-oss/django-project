@@ -28,14 +28,6 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'jazzmin',
 
-    # Cloudinary
-    'cloudinary',
-    'cloudinary_storage',
-
-    # Custom apps
-    'shop.apps.ShopConfig',
-    'blog',
-
     # Django default apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,6 +35,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Cloudinary
+    'cloudinary',
+    'cloudinary_storage',
+
+    # Custom apps
+    'shop.apps.ShopConfig',
+    'blog',
 ]
 
 
@@ -63,11 +63,14 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': 'NSgtAf3QDxBd3WqOfPJKBq4qayM',
 }
 
-# Important for image upload
+# Image upload ke liye
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
+# =========================
 # MIDDLEWARE
+# =========================
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
@@ -86,12 +89,14 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'mac.urls'
 
 
+# =========================
 # TEMPLATES
+# =========================
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
 
-        # templates folder
         'DIRS': [BASE_DIR / 'templates'],
 
         'APP_DIRS': True,
@@ -110,7 +115,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mac.wsgi.application'
 
 
+# =========================
 # DATABASE
+# =========================
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -119,7 +127,10 @@ DATABASES = {
 }
 
 
+# =========================
 # PASSWORD VALIDATION
+# =========================
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -136,7 +147,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# =========================
 # INTERNATIONALIZATION
+# =========================
+
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
@@ -144,15 +158,17 @@ USE_TZ = True
 
 
 # =========================
-# STATIC FILES
+# STATIC FILES (ADMIN CSS FIX)
 # =========================
 
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# ADMIN CSS FIX
+# IMPORTANT:
+# ManifestStorage mat use karo warna admin CSS tootega
 STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
+
 WHITENOISE_MANIFEST_STRICT = False
 
 
@@ -164,11 +180,17 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-# LOGIN / LOGOUT SETTINGS
+# =========================
+# LOGIN / LOGOUT
+# =========================
+
 LOGIN_URL = '/shop/login/'
 LOGIN_REDIRECT_URL = '/shop/'
 LOGOUT_REDIRECT_URL = '/shop/login/'
 
 
+# =========================
 # DEFAULT AUTO FIELD
+# =========================
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
