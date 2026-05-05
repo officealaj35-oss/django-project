@@ -3,265 +3,535 @@
 
 {% block body %}
 <style>
-body {
-    background:#0b0f14;
-    color:#fff;
-    font-family: 'Poppins', sans-serif;
+:root{
+    --bg: #f6f7fb;
+    --surface: #ffffff;
+    --surface-2: #f1f3f7;
+    --text: #121826;
+    --muted: #5f6b7a;
+    --border: #dbe2ea;
+    --shadow: 0 8px 24px rgba(18, 24, 38, .08);
+    --shadow-hover: 0 14px 34px rgba(18, 24, 38, .14);
+    --primary: #111827;
+    --primary-hover: #0b1220;
+    --accent: #2563eb;
+    --accent-soft: rgba(37, 99, 235, .12);
+    --success: #16a34a;
+    --success-soft: rgba(22, 163, 74, .12);
+    --danger: #dc2626;
+    --danger-soft: rgba(220, 38, 38, .12);
+    --gold: #f59e0b;
+    --radius: 18px;
 }
 
-/* CARD */
-.card-custom {
-    flex: 0 0 260px;
-    min-width:260px;
-    height:440px;
-    border-radius:18px;
-    overflow:hidden;
-    background:#0f172a;
-    border:1px solid rgba(255,255,255,0.05);
-    transition:0.3s;
+html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.page-wrap{
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 16px 14px 28px;
+}
+
+.section-head{
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    gap: 12px;
+    margin: 10px 4px 14px;
+}
+
+.section-title{
+    margin: 0;
+    font-size: clamp(18px, 2.2vw, 26px);
+    line-height: 1.2;
+    font-weight: 800;
+    color: var(--text);
+    text-transform: capitalize;
+    letter-spacing: .2px;
+}
+
+.section-sub{
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.category-shell{
+    background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.86));
+    border: 1px solid rgba(219,226,234,.9);
+    border-radius: 24px;
+    padding: 14px;
+    box-shadow: var(--shadow);
+    margin-bottom: 18px;
+    overflow: hidden;
+}
+
+.product-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 14px;
+}
+
+.card-custom{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
     display:flex;
     flex-direction:column;
-    position:relative;
+    min-width: 0;
+    height: 100%;
 }
 
-.card-custom:hover {
-    transform:translateY(-8px) scale(1.02);
-    box-shadow:0 15px 35px rgba(0,255,170,0.2);
+.card-custom:hover{
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(37, 99, 235, .22);
 }
 
-/* IMAGE */
-.img-box {
-    height:200px;
+.card-link{
+    text-decoration:none;
+    color: inherit;
+}
+
+.img-box{
+    position: relative;
+    background: #fff;
+    aspect-ratio: 1 / 1.12;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     overflow:hidden;
+    border-bottom: 1px solid var(--border);
 }
 
-.img-box img {
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    transition:0.4s;
+.img-box img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 10px;
+    transition: transform .25s ease;
 }
 
-.card-custom:hover img {
-    transform:scale(1.1);
+.card-custom:hover .img-box img{
+    transform: scale(1.04);
 }
 
-/* BADGE */
-.badge-custom {
+.badge-custom{
     position:absolute;
-    top:10px;
-    left:10px;
-    background:linear-gradient(45deg,#00ffaa,#00ccff);
-    color:black;
-    padding:4px 10px;
-    font-size:12px;
-    border-radius:20px;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    background: linear-gradient(135deg, #2563eb, #16a34a);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 999px;
+    box-shadow: 0 6px 14px rgba(37, 99, 235, .22);
 }
 
-/* BODY */
-.card-body {
-    padding:12px;
+.card-body{
     display:flex;
     flex-direction:column;
-    text-align:left;
+    gap: 8px;
+    padding: 12px 12px 14px;
+    min-width: 0;
+    flex: 1;
 }
 
-/* TITLE */
-.product-title {
-    font-size:14px;
-    font-weight:600;
-    color:white;
-    height:40px;
-    overflow:hidden;
+.product-title{
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 700;
+    color: var(--text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 38px;
 }
 
-/* DESC */
-.product-desc {
-    font-size:12px;
-    color:#aaa;
-    height:30px;
-    overflow:hidden;
+.product-desc{
+    margin: 0;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 34px;
 }
 
-/* PRICE */
-.price {
-    font-size:18px;
-    font-weight:bold;
-    color:#00ffaa;
-    margin:6px 0;
-}
-
-/* BUTTONS */
-.bottom-section {
-    margin-top:auto;
-}
-
-.cart-box button {
-    width:100%;
-    border-radius:8px;
-    font-weight:600;
-}
-
-/* QUICK VIEW */
-.quick-btn {
-    width:100%;
-    margin-top:6px;
-    border-radius:8px;
-    background:transparent;
-    border:1px solid #00ffaa;
-    color:#00ffaa;
-    transition:0.3s;
-}
-
-.quick-btn:hover {
-    background:#00ffaa;
-    color:black;
-}
-
-/* SLIDER */
-.slider-wrapper {
-    overflow:hidden;
-    position:relative;
-    padding:10px 40px;
-}
-
-.slider-track {
+.rating-row{
     display:flex;
-    gap:20px;
-    transition:transform 0.4s ease;
-    width:max-content;
+    align-items:center;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: #2f7a33;
+    font-weight: 700;
 }
 
-/* ARROWS */
-.slider-btn {
-    position:absolute;
-    top:45%;
-    background:#000;
-    color:white;
-    border:none;
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    cursor:pointer;
-    opacity:0.7;
+.rating-star{
+    color: var(--gold);
 }
 
-.slider-btn:hover {
-    opacity:1;
-    background:#00ffaa;
-    color:black;
+.price-row{
+    display:flex;
+    align-items:baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 2px;
 }
 
-.left-btn { left:0; }
-.right-btn { right:0; }
+.price{
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+}
 
+.old{
+    text-decoration: line-through;
+    color: #8b95a7;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.off{
+    color: var(--success);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.actions{
+    margin-top: auto;
+    display:flex;
+    flex-direction:column;
+    gap: 8px;
+}
+
+.cart-box{
+    display:flex;
+    width:100%;
+}
+
+.btn-cart{
+    width:100%;
+    border: 0;
+    border-radius: 12px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    padding: 10px 12px;
+    transition: background .2s ease, transform .2s ease;
+}
+
+.btn-cart:hover{
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.qty-wrap{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 8px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    padding: 8px;
+}
+
+.qty-wrap .qty-btn{
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    line-height: 1;
+}
+
+.qty-wrap .minus{
+    background: var(--danger-soft);
+    color: var(--danger);
+}
+
+.qty-wrap .plus{
+    background: var(--success-soft);
+    color: var(--success);
+}
+
+.qty-num{
+    min-width: 24px;
+    text-align:center;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.quick-btn{
+    width:100%;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text);
+    border-radius: 12px;
+    font-weight: 700;
+    padding: 10px 12px;
+    transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+
+.quick-btn:hover{
+    background: #eef2f7;
+    border-color: #cfd8e3;
+    transform: translateY(-1px);
+}
+
+.section-meta{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 12px;
+    margin: 0 4px 12px;
+}
+
+.section-pill{
+    background: rgba(37, 99, 235, .08);
+    color: var(--accent);
+    border: 1px solid rgba(37, 99, 235, .16);
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+@media (max-width: 991px){
+    .page-wrap{
+        padding: 12px 10px 24px;
+    }
+
+    .category-shell{
+        padding: 12px;
+        border-radius: 20px;
+    }
+
+    .product-grid{
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 12px;
+    }
+
+    .card-body{
+        padding: 11px;
+    }
+
+    .product-title{
+        font-size: 13px;
+    }
+
+    .price{
+        font-size: 17px;
+    }
+}
+
+@media (max-width: 600px){
+    .section-head{
+        align-items:flex-start;
+        flex-direction:column;
+        gap: 6px;
+        margin-bottom: 10px;
+    }
+
+    .product-grid{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .category-shell{
+        padding: 10px;
+        border-radius: 18px;
+    }
+
+    .img-box{
+        aspect-ratio: 1 / 1;
+    }
+
+    .card-body{
+        padding: 10px;
+        gap: 6px;
+    }
+
+    .product-title{
+        font-size: 12px;
+        min-height: 32px;
+    }
+
+    .product-desc{
+        font-size: 11px;
+        min-height: 30px;
+    }
+
+    .price{
+        font-size: 15px;
+    }
+
+    .quick-btn, .btn-cart{
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+
+    .qty-wrap{
+        padding: 7px;
+    }
+
+    .qty-wrap .qty-btn{
+        width: 34px;
+        height: 34px;
+    }
+}
+
+@media (max-width: 420px){
+    .product-grid{
+        grid-template-columns: 1fr;
+    }
+}
 </style>
-{% for products, range, nslides in allprods %}
 
-<h4>{{ products.0.category_name }}</h4>
+<div class="page-wrap">
+    {% for products, range, nslides in allprods %}
+    <div class="category-shell">
+        <div class="section-head">
+            <h4 class="section-title">{{ products.0.category_name }}</h4>
+            <p class="section-sub">Curated products with fast cart actions and mobile-friendly cards</p>
+        </div>
 
-<div class="slider-wrapper">
+        <div class="section-meta">
+            <span class="section-pill">Trending</span>
+            <span>{{ products|length }} items</span>
+        </div>
 
-<button type="button" class="slider-btn left-btn" onclick="slideLeft({{ forloop.counter }})">❮</button>
-<button type="button" class="slider-btn right-btn" onclick="slideRight({{ forloop.counter }})">❯</button>
+        <div class="product-grid">
+            {% for product in products %}
+            <div class="card-custom"
+                 id="card{{ product.product_id }}"
+                 data-name="{{ product.product_name|escape }}"
+                 data-price="{{ product.price }}"
+                 data-image="{{ product.image.url }}"
+                 data-url="{% url 'product_view' product.product_id %}">
 
-<div class="slider-track" id="slider{{ forloop.counter }}">
+                <a class="card-link" href="{% url 'product_view' product.product_id %}">
+                    <div class="img-box">
+                        <span class="badge-custom">Hot</span>
+                        <img src="{{ product.image.url }}" alt="{{ product.product_name|escape }}">
+                    </div>
+                </a>
 
-{% for product in products %}
-<div class="card card-custom"
-     id="card{{ product.product_id }}"
-     data-name="{{ product.product_name|escape }}"
-     data-price="{{ product.price }}"
-     data-image="{{ product.image.url }}"
-     data-url="{% url 'product_view' product.product_id %}">
+                <div class="card-body">
+                    <h6 class="product-title">{{ product.product_name }}</h6>
 
-<div class="badge-custom">Hot</div>
+                    {% if product.product_description %}
+                    <p class="product-desc">{{ product.product_description|truncatechars:70 }}</p>
+                    {% endif %}
 
-<div class="img-box">
-<a href="{% url 'product_view' product.product_id %}">
-<img id="imgpr{{ product.product_id }}" src="{{ product.image.url }}" alt="{{ product.product_name|escape }}"></a>
+                    <div class="rating-row">
+                        <span class="rating-star">★</span>
+                        <span>4.3</span>
+                        <span>|</span>
+                        <span>1,200</span>
+                    </div>
+
+                    <div class="price-row">
+                        <div class="price">₹{{ product.price }}</div>
+                        <div class="old">₹999</div>
+                        <div class="off">40% off</div>
+                    </div>
+
+                    <div class="actions">
+                        <div id="divpr{{ product.product_id }}" class="cart-box">
+                            <button type="button"
+                                    id="pr{{ product.product_id }}"
+                                    class="btn-cart cart">
+                                Add to Cart
+                            </button>
+                        </div>
+
+                        <a href="{% url 'product_view' product.product_id %}" style="text-decoration:none;">
+                            <button type="button" class="quick-btn">Quick View</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
 </div>
-
-<div class="card-body">
-
-<h6 class="product-title" id="namepr{{ product.product_id }}">
-{{ product.product_name }}
-</h6>
-
-<p class="product-desc">
-{{ product.product_description|truncatechars:40 }}
-</p>
-
-<div class="price" id="pricepr{{ product.product_id }}">₹{{ product.price }}</div>
-
-<div class="bottom-section">
-
-<div id="divpr{{ product.product_id }}" class="cart-box">
-<button type="button" id="pr{{ product.product_id }}" class="btn btn-success cart">Add to Cart</button>
-</div>
-
-<a href="{% url 'product_view' product.product_id %}">
-<button type="button" class="btn quick-btn">Quick View</button>
-</a>
-
-</div>
-
-</div>
-</div>
-{% endfor %}
-
-</div>
-</div>
-
-{% endfor %}
-
 {% endblock %}
+
 {% block js %}
 {{ block.super }}
 <script>
-
 var CART_KEY = "cart_" + (window.username || "guest");
-/* ---------- CART ---------- */
 
 function getCart(){
-    return JSON.parse(localStorage.getItem(CART_KEY) || "{}");
+    try {
+        return JSON.parse(localStorage.getItem(CART_KEY) || "{}");
+    } catch (e) {
+        return {};
+    }
 }
 
 function saveCart(cart){
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
 }
 
-/* ---------- HEADER SAFE ---------- */
-
 function updateHeader(){
-    let cart = getCart();
+    const cart = getCart();
     let total = 0;
+    Object.values(cart).forEach(item => total += item.qty || 0);
 
-    Object.values(cart).forEach(i => total += i.qty);
-
-    let badge = document.getElementById("cart");
-    if(badge){
-        badge.innerText = total;
-    }
+    const badge = document.getElementById("cart");
+    if (badge) badge.innerText = total;
 }
 
-/* ---------- ADD TO CART ---------- */
+function updateUI(id, qty){
+    const div = document.getElementById("div" + id);
+    if (!div) return;
+
+    div.innerHTML = `
+        <div class="qty-wrap">
+            <button id="minus${id}" class="qty-btn minus" type="button">-</button>
+            <span class="qty-num">${qty}</span>
+            <button id="plus${id}" class="qty-btn plus" type="button">+</button>
+        </div>
+    `;
+}
 
 document.addEventListener("click", function(e){
+    const target = e.target;
 
-    if(e.target.classList.contains("cart")){
-        let id = e.target.id;
-        let cart = getCart();
+    if (target.classList.contains("cart")) {
+        const id = target.id;
+        const realId = id.replace("pr", "");
+        const card = document.getElementById("card" + realId);
+        if (!card) return;
 
-        let realId = id.replace("pr","");
-        let card = document.getElementById("card"+realId);
+        const cart = getCart();
 
-        if(!card){
-            console.log("Card not found:", id);
-            return;
-        }
-
-        if(!cart[id]){
+        if (!cart[id]) {
             cart[id] = {
                 qty: 0,
                 name: card.dataset.name || "",
@@ -272,99 +542,54 @@ document.addEventListener("click", function(e){
         }
 
         cart[id].qty += 1;
-
         saveCart(cart);
-
-        console.log("CART SAVED:", cart); // DEBUG
-
         updateUI(id, cart[id].qty);
         updateHeader();
     }
 
-    if(e.target.classList.contains("plus")){
-        let id = e.target.id.replace("plus","");
-        let cart = getCart();
+    if (target.classList.contains("plus")) {
+        const id = target.id.replace("plus", "");
+        const cart = getCart();
 
-        if(cart[id]){
+        if (cart[id]) {
             cart[id].qty += 1;
+            saveCart(cart);
+            updateUI(id, cart[id].qty);
+            updateHeader();
         }
-
-        saveCart(cart);
-        updateUI(id, cart[id].qty);
-        updateHeader();
     }
 
-    if(e.target.classList.contains("minus")){
-        let id = e.target.id.replace("minus","");
-        let cart = getCart();
+    if (target.classList.contains("minus")) {
+        const id = target.id.replace("minus", "");
+        const cart = getCart();
 
-        if(cart[id]){
+        if (cart[id]) {
             cart[id].qty -= 1;
 
-            if(cart[id].qty <= 0){
+            if (cart[id].qty <= 0) {
                 delete cart[id];
-                document.getElementById("div"+id).innerHTML =
-                    `<button id="${id}" class="btn btn-success cart">Add to Cart</button>`;
-            }else{
+                const div = document.getElementById("div" + id);
+                if (div) {
+                    div.innerHTML = `<button id="${id}" class="btn-cart cart" type="button">Add to Cart</button>`;
+                }
+            } else {
                 updateUI(id, cart[id].qty);
             }
+
+            saveCart(cart);
+            updateHeader();
         }
-
-        saveCart(cart);
-        updateHeader();
     }
-
 });
-
-/* ---------- UI UPDATE ---------- */
-
-function updateUI(id, qty){
-    let div = document.getElementById("div"+id);
-
-    if(!div) return;
-
-    div.innerHTML = `
-        <button id="minus${id}" class="btn btn-danger minus">-</button>
-        <span>${qty}</span>
-        <button id="plus${id}" class="btn btn-success plus">+</button>
-    `;
-}
-
-/* ---------- INIT ---------- */
 
 window.addEventListener("DOMContentLoaded", function(){
-    let cart = getCart();
-
-    Object.keys(cart).forEach(id=>{
-        updateUI(id, cart[id].qty);
+    const cart = getCart();
+    Object.keys(cart).forEach(id => {
+        if (cart[id] && cart[id].qty > 0) {
+            updateUI(id, cart[id].qty);
+        }
     });
-
     updateHeader();
 });
-
-/* ---------- SLIDER ---------- */
-
-window.slideIndex = {};
-
-window.slideLeft = function(id){
-    let s = document.getElementById("slider"+id);
-    if(!s) return;
-
-    slideIndex[id] = slideIndex[id] || 0;
-    if(slideIndex[id] > 0) slideIndex[id]--;
-
-    s.style.transform = `translateX(-${slideIndex[id]*270}px)`;
-}
-
-window.slideRight = function(id){
-    let s = document.getElementById("slider"+id);
-    if(!s) return;
-
-    slideIndex[id] = slideIndex[id] || 0;
-    if(slideIndex[id] < s.children.length-1) slideIndex[id]++;
-
-    s.style.transform = `translateX(-${slideIndex[id]*270}px)`;
-}
-
 </script>
 {% endblock %}
