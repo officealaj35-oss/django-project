@@ -113,7 +113,7 @@ def search(request):
 def product_view(request, id):
     product = Product.objects.filter(product_id=id)
     if not product:
-        return render(request, 'shop/productview.html', {'product': None})
+        return render(request, 'shop/productview.html', {'product': product})
     return render(request, 'shop/productview.html', {'product': product[0]})
 
 
