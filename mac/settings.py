@@ -121,7 +121,11 @@ WSGI_APPLICATION = 'mac.wsgi.application'
 # =========================
 
 DATABASES = {
-    'default': dj_database_url.parse('postgresql://myshop_db_f84k_user:Es33EiD9tkcVuuKwlVj0BSgOFAuaF9Ba@dpg-d7sq52favr4c73f8htq0-a.oregon-postgres.render.com/myshop_db_f84k')
+    'default': dj_database_url.parse(
+        'postgresql://myshop_db_f84k_user:Es33EiD9tkcVuuKwlVj0BSgOFAuaF9Ba@dpg-d7sq52favr4c73f8htq0-a.oregon-postgres.render.com/myshop_db_f84k',
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 # =========================
