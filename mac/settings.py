@@ -9,6 +9,7 @@ import os
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+import dj_database_url
 
 
 # Base directory
@@ -120,12 +121,8 @@ WSGI_APPLICATION = 'mac.wsgi.application'
 # =========================
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse('postgresql://myshop_db_f84k_user:Es33EiD9tkcVuuKwlVj0BSgOFAuaF9Ba@dpg-d7sq52favr4c73f8htq0-a.oregon-postgres.render.com/myshop_db_f84k')
 }
-
 
 # =========================
 # PASSWORD VALIDATION
